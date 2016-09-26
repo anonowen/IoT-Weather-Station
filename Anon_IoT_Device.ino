@@ -1,4 +1,3 @@
-
 //library DHT22
 #include <DHT.h>
 //library esp
@@ -7,9 +6,6 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
-extern "C" {
-  #include "user_interface.h"
-}
 
 const char* ssid = "Anon";                                  //fill in your wifi name
 const char* password = "89228922";                         //fill in your wifi password
@@ -51,10 +47,7 @@ void connectWifi(){
   	Serial.println();
   }
 }
-void turnOff(int pin) {
-  pinMode(pin, OUTPUT);
-  digitalWrite(pin, 1);
-}
+
 void setup() {
 	// declare the enable and Pin as an OUTPUT:
 	pinMode(enable1, OUTPUT);
@@ -69,7 +62,6 @@ void setup() {
 		Serial.print("problem detecting BMP");
 		while (1);
 	  }
-   
 	dht.begin(); 
 	// connectWifi
 	connectWifi();
@@ -100,7 +92,7 @@ void loop() {
 	//measure dew point with the temperature and the humidity
 
 	double gamma = log(h/100) + ((17.625*t) / (243.04+t));
-double dp = 243.04*gamma / (17.625-gamma);
+ 	double dp = 243.04*gamma / (17.625-gamma);
 
 	Serial.print("Dew point:        ");
 	Serial.print(dp);
@@ -178,11 +170,20 @@ double dp = 243.04*gamma / (17.625-gamma);
 		client.println(postStr);
 	}
 	client.stop();
- Serial.println();
-  Serial.println("closing connection. going to sleep...(4Min30sec)");
-  delay(1000);
-  // go to deepsleep for 4 minutes 30 Sec
-system_deep_sleep_set_option(0);
-system_deep_sleep(270000000); 
-delay(1000);
+
+	// 5 minute delay between updates
+ 
+ Serial.println("   !!!!!Wait 5 minute");
+ delay(60000);
+ Serial.println("   !!!!Wait 4 minute");
+ delay(60000);
+ Serial.println("   !!!Wait 3 minute");
+ delay(60000);
+ Serial.println("   !!Wait 2 minute");
+ delay(60000);
+ Serial.println("   !Wait 1 minute");
+ delay(60000);
+ 
+ Serial.println("");
+ Serial.println("");
 }
